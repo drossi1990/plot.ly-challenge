@@ -53,7 +53,7 @@ function retrieve_metadata(sample) {
       Plotly.newPlot("bar", bar_data, bar_layout);
 
       //assigning bubble data
-      var bubbleData = [
+      var bubble_data = [
         {
           x: culture_ids,
           y: sample_values,
@@ -68,16 +68,15 @@ function retrieve_metadata(sample) {
       ];
       //assigning layout of bubble chart
 
-      var bubbleLayout = {
+      var bubble_layout = {
         title: "Bacterial Cultures Detected in Sample",
-        margin: { t: 0 },
         hovermode: "x",
         xaxis: { title: "OTU ID" },
         margin: { t: 50, l: 60 }
       };
      
       //plotting bubble chart
-      Plotly.newPlot("bubble", bubbleData, bubbleLayout);
+      Plotly.newPlot("bubble", bubble_data, bubble_layout);
 
     });
     
