@@ -21,3 +21,5 @@ List of Commits:
 14. updating readme
 15. update to index subtitle formatting
 16. updating readme
+17. Tweaking bubble chart margins
+18. update readme
