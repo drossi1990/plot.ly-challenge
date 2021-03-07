@@ -2,10 +2,9 @@ function retrieve_metadata(sample) {
     //retrieve metadate from json, filter results by sample #, and clear existing metadata
     d3.json("samples.json").then((data) => {
       var metadata= data.metadata;
-      console.log(metadata)
       var samplesarray= metadata.filter(sampleobject => sampleobject.id == sample);
       var samp_return= samplesarray[0]
-    //   console.log(result)
+    //   console.log(samp_return)
       var PANEL = d3.select("#sample-metadata");
       PANEL.html("");
       Object.entries(samp_return).forEach(([samp, prev]) => {
@@ -16,38 +15,63 @@ function retrieve_metadata(sample) {
   }
   
   function chart_constructor(sample) {
+    //assigning variables to build charts
     d3.json("samples.json").then((data) => {
       var bb_samples = data.samples;
       var bb_results = bb_samples.filter(sampleObj => sampleObj.id == sample);
       var culture_result = bb_results[0];
-  
-      var sample_ids = culture_result.otu_ids;
-      var sample_labels = culture_result.otu_labels;
-      var sample_strains = culture_result.sample_values;
-  
-      var xticks = sample_ids.slice(0, 15).map(otuID => `OTU ${otuID}`).reverse();
+      var culture_ids = culture_result.otu_ids;
+      var culture_labels = culture_result.otu_labels;
+      var sample_values = culture_result.sample_values;
+      var yticks = culture_ids.slice(0, 15).map(otuID => `OTU ${otuID}`).reverse();
+     //Assigning data for barchart to display Top 15 strains
       var bar_data = [
         {
-          y: sample_strains.slice(0, 15).reverse(),
-          x:xticks,
-          text: sample_labels.slice(0, 15).reverse(),
+          x: sample_values.slice(0, 15).reverse(),
+          y:yticks,
+          text: culture_labels.slice(0, 15).reverse(),
           type: "bar",
           marker:{
           color: 'green'},
-          orientation: "l",
+          orientation: "h",
         }
       ];
-  
+      //Assigning 
       var bar_layout = {
        title: "Top 15 Most Prevalent Cultures in Sample",
-       xaxis: {
-        tickangle: -45
+       yaxis: {
+        tickangle: 15
       },
-        margin: { t: 40, l: 40 }
+        margin: { t: 100, l: 100 }
       };
-  
+      
       Plotly.newPlot("bar", bar_data, bar_layout);
+
+      var bubbleLayout = {
+        title: "Bacterial Cultures Detected in Sample",
+        margin: { t: 0 },
+        hovermode: "x",
+        xaxis: { title: "OTU ID" },
+        margin: { t: 50}
+      };
+      var bubbleData = [
+        {
+          x: culture_ids,
+          y: sample_values,
+          text: culture_labels,
+          mode: "markers",
+          marker: {
+            size: sample_values,
+            color: culture_ids,
+            colorscale: "Jet"
+          }
+        }
+      ];
+      
+      Plotly.newPlot("bubble", bubbleData, bubbleLayout);
+
     });
+    
   }
   
   function Initialize() {
@@ -73,7 +97,7 @@ function retrieve_metadata(sample) {
     });
   }
   
-  function optionChanged(user_selection) {
+  function option_changed(user_selection) {
     // updates dashboard with user selection of a new data sample
     chart_constructor(user_selection);
     buildMetadata(user_selection);
