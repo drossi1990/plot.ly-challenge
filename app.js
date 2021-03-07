@@ -83,11 +83,6 @@ function retrieve_metadata(sample) {
     
   }
 
-// updates dashboard with user selection of a new data sample
-function option_changed(user_selection) {
-    chart_constructor(user_selection);
-    retrieve_metadata(user_selection);
-  }
 
   //Initialization function to construct initial dashboard
   function Initialize() {
@@ -112,6 +107,12 @@ function option_changed(user_selection) {
       retrieve_metadata(init_sample);
     });
   }
+
+// updates dashboard with user selection of a new data sample
+function select_new(user_selection) {
+    chart_constructor(user_selection);
+    retrieve_metadata(user_selection);
+}
 
 
 //launch page
