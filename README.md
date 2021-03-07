@@ -19,3 +19,5 @@ List of Commits:
 12. loading in app.js with updated var names
 13. updating readme
 14. updating readme
+15. update to index subtitle formatting
+16. updating readme
